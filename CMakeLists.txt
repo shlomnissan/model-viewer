@@ -22,8 +22,8 @@ find_package(glm REQUIRED)
 find_package(imgui REQUIRED)
 
 set(CORE_SOURCES
-    src/core/framebuffer.h
     src/core/framebuffer.cpp
+    src/core/framebuffer.h
     src/core/mesh.cpp
     src/core/mesh.h
     src/core/shader.cpp
@@ -35,14 +35,20 @@ set(CORE_SOURCES
 set(LIBS_SOURCES
     libs/glad/glad.c
     libs/imgui/imgui_impl_glfw.cpp
+    libs/imgui/imgui_impl_glfw.h
     libs/imgui/imgui_impl_opengl3.cpp
+    libs/imgui/imgui_impl_opengl3.h
 )
 
-set(DEMO_SOURCES
+set(APP_SOURCES
+    src/app/menu.cpp
+    src/app/menu.h
+    src/app/viewport.cpp
+    src/app/viewport.h
     src/main.cpp
 )
 
-add_executable(model-viewer ${LIBS_SOURCES} ${CORE_SOURCES} ${DEMO_SOURCES})
+add_executable(model-viewer ${LIBS_SOURCES} ${CORE_SOURCES} ${APP_SOURCES})
 
 target_include_directories(model-viewer PRIVATE
     ${CMAKE_SOURCE_DIR}/src
