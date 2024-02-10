@@ -1,0 +1,10 @@
+[requires]
+assimp/5.2.2
+fmt/8.1.1
+glfw/3.3.8
+glm/0.9.9.6
+imgui/1.90.1
+
+[generators]
+CMakeDeps
+CMakeToolchain
