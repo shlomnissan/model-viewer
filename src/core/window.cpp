@@ -23,6 +23,12 @@ constexpr auto callback_resize =
     }
 };
 
+constexpr auto callback_mouse =
+[](GLFWwindow *window, double x, double y) {
+    auto instance = static_cast<Window*>(glfwGetWindowUserPointer(window));
+    instance->SetMousePosition(x, y);
+};
+
 Window::Window(int width, int height, std::string_view title) {
     glfwSetErrorCallback(callback_error);
 
@@ -52,6 +58,7 @@ Window::Window(int width, int height, std::string_view title) {
     glfwSwapInterval(1);
     glfwSetFramebufferSizeCallback(window_, callback_resize);
     glfwSetWindowUserPointer(window_, this);
+    glfwSetCursorPosCallback(window_, callback_mouse);
 
     glViewport(0, 0, width, height);
 
@@ -85,6 +92,21 @@ auto Window::Start(const std::function<void(const double delta)> &program) -> vo
         glfwSwapBuffers(window_);
         glfwPollEvents();
     }
+}
+
+auto Window::GetKey(int key, int action) const -> bool {
+    return glfwGetKey(window_, key) == action;
+}
+
+auto Window::GetMouseButton(int key, int action) const -> bool {
+    return glfwGetMouseButton(window_, key) == action;
+}
+
+auto Window::SetMousePosition(double x, double y) -> void {
+    mouse_pos_ = std::pair{
+        static_cast<float>(x),
+        static_cast<float>(y)
+    };
 }
 
 Window::~Window() {

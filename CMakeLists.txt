@@ -22,6 +22,8 @@ find_package(glm REQUIRED)
 find_package(imgui REQUIRED)
 
 set(CORE_SOURCES
+    src/core/camera.cpp
+    src/core/camera.h
     src/core/framebuffer.cpp
     src/core/framebuffer.h
     src/core/mesh.cpp

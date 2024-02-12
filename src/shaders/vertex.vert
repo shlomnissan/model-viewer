@@ -8,8 +8,10 @@ layout (location = 1) in vec3 aColor;
 out vec3 color;
 
 uniform mat4 Projection;
+uniform mat4 View;
 
 void main() {
-    gl_Position = Projection * vec4(aPosition, 1.0);
+    gl_Position = Projection * View * vec4(aPosition, 1.0);
+
     color = aColor;
 }

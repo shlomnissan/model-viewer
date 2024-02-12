@@ -9,6 +9,7 @@
 #include "app/menu.h"
 #include "app/viewport.h"
 
+#include "core/camera.h"
 #include "core/framebuffer.h"
 #include "core/mesh.h"
 #include "core/shader.h"
@@ -22,6 +23,7 @@ auto main() -> int {
     const auto height = 768;
 
     auto window = Window {width, height, "3D Model Viewer"};
+    auto camera = Camera{45.0f, width, height};
 
     auto shader = Shader {{
         {ShaderType::kVertexShader, _SHADER_vertex},
@@ -30,11 +32,13 @@ auto main() -> int {
     
     glEnable(GL_DEPTH_TEST);
 
-    auto updateProjection = [&shader](int w, int h) {
-        auto ratio = static_cast<float>(w) / static_cast<float>(h);
-        shader.SetMat4("Projection", glm::perspective(45.0f, ratio, 0.1f, 100.0f));
-    };
-    updateProjection(width, height);
+    
+
+    // auto updateProjection = [&shader](int w, int h) {
+    //     auto ratio = static_cast<float>(w) / static_cast<float>(h);
+    //     shader.SetMat4("Projection", glm::perspective(45.0f, ratio, 0.1f, 100.0f));
+    // };
+    // updateProjection(width, height);
 
     auto framebuffer = Framebuffer {width, height};
     auto menu = Menu {};
@@ -54,6 +58,11 @@ auto main() -> int {
         framebuffer.Bind();
         glClearColor(0.17f, 0.16f, 0.29f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        camera.Update(window);
+
+        shader.SetMat4("Projection", camera.Projection());
+        shader.SetMat4("View", camera.View());
 
         triangle.Draw(shader);
         framebuffer.Unbind();
