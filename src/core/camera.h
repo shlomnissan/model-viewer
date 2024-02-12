@@ -21,7 +21,7 @@ public:
 private:
     bool first_pos_ {true};
 
-    float distance_ = 8.0f;
+    float distance_ = 4.0f;
     float horizontal_angle_ = 0.8f;
     float vertical_angle_ = 0.45f;
 

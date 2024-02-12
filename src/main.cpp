@@ -15,6 +15,8 @@
 #include "core/shader.h"
 #include "core/window.h"
 
+#include "mesh/cube.h"
+
 #include "shaders/headers/vertex.h"
 #include "shaders/headers/fragment.h"
 
@@ -31,14 +33,7 @@ auto main() -> int {
     }};
     
     glEnable(GL_DEPTH_TEST);
-
-    
-
-    // auto updateProjection = [&shader](int w, int h) {
-    //     auto ratio = static_cast<float>(w) / static_cast<float>(h);
-    //     shader.SetMat4("Projection", glm::perspective(45.0f, ratio, 0.1f, 100.0f));
-    // };
-    // updateProjection(width, height);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     auto framebuffer = Framebuffer {width, height};
     auto menu = Menu {};
@@ -48,11 +43,7 @@ auto main() -> int {
         .texture_id = framebuffer.texture_id()
     }};
 
-    auto triangle = Mesh({
-        -0.5f, -0.5f, -2.0f, 1.0f, 0.0f, 0.0f,
-         0.0f,  0.5f, -2.0f, 0.0f, 1.0f, 0.0f,
-         0.5f, -0.5f, -2.0f, 0.0f, 0.0f, 1.0f,
-    });
+    auto cube = Mesh {cube_vertex_0, cube_index_0};
 
     window.Start([&]([[maybe_unused]] const double delta){
         framebuffer.Bind();
@@ -64,7 +55,7 @@ auto main() -> int {
         shader.SetMat4("Projection", camera.Projection());
         shader.SetMat4("View", camera.View());
 
-        triangle.Draw(shader);
+        cube.Draw(shader);
         framebuffer.Unbind();
 
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
