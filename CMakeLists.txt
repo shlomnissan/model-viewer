@@ -43,6 +43,8 @@ set(LIBS_SOURCES
 )
 
 set(APP_SOURCES
+    src/app/grid.cpp
+    src/app/grid.h
     src/app/menu.cpp
     src/app/menu.h
     src/app/viewport.cpp

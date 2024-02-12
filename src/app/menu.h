@@ -5,7 +5,7 @@
 
 class Menu {
 public:
-    auto Render() -> void;
+    auto Draw() -> void;
 
 private:
     bool show_about_;

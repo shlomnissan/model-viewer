@@ -7,7 +7,7 @@
 #include <fmt/format.h>
 
 
-auto Menu::Render() -> void {
+auto Menu::Draw() -> void {
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             ImGui::MenuItem("Open", nullptr, &show_file_explorer_);

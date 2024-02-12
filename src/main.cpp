@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "app/grid.h"
 #include "app/menu.h"
 #include "app/viewport.h"
 
@@ -17,8 +18,8 @@
 
 #include "mesh/cube.h"
 
-#include "shaders/headers/vertex.h"
-#include "shaders/headers/fragment.h"
+#include "shaders/headers/scene_vert.h"
+#include "shaders/headers/scene_frag.h"
 
 auto main() -> int {
     const auto width = 1024;
@@ -26,14 +27,14 @@ auto main() -> int {
 
     auto window = Window {width, height, "3D Model Viewer"};
     auto camera = Camera{45.0f, width, height};
+    auto grid = Grid{24};
 
     auto shader = Shader {{
-        {ShaderType::kVertexShader, _SHADER_vertex},
-        {ShaderType::kFragmentShader, _SHADER_fragment}
+        {ShaderType::kVertexShader, _SHADER_scene_vert},
+        {ShaderType::kFragmentShader, _SHADER_scene_frag}
     }};
     
     glEnable(GL_DEPTH_TEST);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     auto framebuffer = Framebuffer {width, height};
     auto menu = Menu {};
@@ -52,17 +53,21 @@ auto main() -> int {
 
         camera.Update(window);
 
-        shader.SetMat4("Projection", camera.Projection());
-        shader.SetMat4("View", camera.View());
+        auto model = glm::mat4{1.0f};
+        model = glm::translate(model, {0.0f, 0.5f, 0.0f});
 
+        shader.SetMat4("Projection", camera.Projection());
+        shader.SetMat4("ModelView", camera.View() * model);
+
+        grid.Draw(camera);
         cube.Draw(shader);
         framebuffer.Unbind();
 
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        menu.Render();
-        viewport.Render();
+        
+        menu.Draw();
+        viewport.Draw();
     });
 
     return 0;

@@ -15,7 +15,7 @@ class Viewport {
 public:
     explicit Viewport(const ViewportSettings& settings);
 
-    auto Render() const -> void;
+    auto Draw() const -> void;
 
 private:
     static constexpr float kTopOffset = 18.0f;
