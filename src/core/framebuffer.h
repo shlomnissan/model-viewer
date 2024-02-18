@@ -23,7 +23,8 @@ public:
 private:
     GLuint width_;
     GLuint height_;
-    GLuint framebuffer_id_;
+    GLuint frame_buffer_id_;
+    GLuint render_buffer_id_;
     GLuint texture_id_;
 };
 

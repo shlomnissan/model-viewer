@@ -19,10 +19,10 @@ auto Viewport::Draw() const -> void {
     ImGui::SetWindowSize({settings_.width, settings_.height});
     ImGui::GetWindowDrawList()->AddImage(
         (void *)settings_.texture_id,
-        ImVec2(0, 0), 
-        ImVec2(settings_.width, settings_.height), 
+        ImVec2(0, 0),
+        ImVec2(settings_.width, settings_.height),
         ImVec2(0, 1), ImVec2(1, 0)
     );
     ImGui::End();
-    ImGui::PopStyleVar(); 
+    ImGui::PopStyleVar();
 }

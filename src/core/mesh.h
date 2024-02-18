@@ -21,6 +21,6 @@ private:
     unsigned int ebo_ {0};
     unsigned int indices_size_ {0};
 
-    auto ConfigureVertices(const std::vector<float>& vertex_data) -> void; 
+    auto ConfigureVertices(const std::vector<float>& vertex_data) -> void;
     auto ConfigureIndices(const std::vector<unsigned int>& index_data) -> void;
 };

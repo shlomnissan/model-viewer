@@ -4,8 +4,13 @@
 #include "framebuffer.h"
 
 Framebuffer::Framebuffer(int width, int height) : width_(width), height_(height) {
-    glGenFramebuffers(1, &framebuffer_id_);
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_id_);
+    glGenFramebuffers(1, &frame_buffer_id_);
+    glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer_id_);
+
+    glGenRenderbuffers(1, &render_buffer_id_);
+    glBindRenderbuffer(GL_RENDERBUFFER, render_buffer_id_);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, render_buffer_id_);
 
     glGenTextures(1, &texture_id_);
 	glBindTexture(GL_TEXTURE_2D, texture_id_);
@@ -22,16 +27,19 @@ Framebuffer::Framebuffer(int width, int height) : width_(width), height_(height)
 }
 
 auto Framebuffer::Bind() -> void {
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_id_);
+    glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer_id_);
+    glBindRenderbuffer(GL_RENDERBUFFER, render_buffer_id_);
 }
 
 auto Framebuffer::Unbind() -> void {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
 Framebuffer::~Framebuffer() {
-    if (framebuffer_id_) {
-        glDeleteFramebuffers(1, &framebuffer_id_);
+    if (frame_buffer_id_) {
+        glDeleteFramebuffers(1, &frame_buffer_id_);
+        glDeleteRenderbuffers(1, &render_buffer_id_);
         glDeleteTextures(1, &texture_id_);
     }
 }
