@@ -5,41 +5,46 @@
 layout (location = 0) in vec3 aPosition;
 layout (location = 1) in vec3 aNormal;
 
-struct Light {
-    vec3 position;
-    vec3 ambient;
-    vec3 diffuse;
+struct LightInfo {
+    vec3 Position;
+    vec3 La;
+    vec3 Ld;
 };
 
-struct Material {
-    vec3 ambient;
-    vec3 diffuse;
+struct MaterialInfo {
+    vec3 Ka;
+    vec3 Kd;
 };
 
-out vec3 light_intensity;
+out vec3 color;
 
 uniform mat4 Projection;
 uniform mat4 ModelView;
-uniform Light LightSource;
-uniform Material SurfaceMaterial;
+uniform mat3 NormalMatrix;
+uniform LightInfo Light;
+uniform MaterialInfo Material;
 
-vec3 ambient_component() {
-    return LightSource.ambient * SurfaceMaterial.ambient;
+void SetViewSpace(out vec4 position, out vec3 normal) {
+    position = ModelView * vec4(aPosition, 1.0);
+    normal = normalize(NormalMatrix * aNormal);
 }
 
-vec3 diffuse_component(const in vec3 position) {
-    const mat3 normal_matrix = mat3(inverse(transpose(ModelView)));
-    const vec3 normal = normalize(normal_matrix * aNormal);
-    const vec3 light_dir = normalize(LightSource.position - vec3(position));
-    const float diffuse = max(dot(light_dir, normal), 0);
-    return LightSource.diffuse * SurfaceMaterial.diffuse * diffuse;
+vec3 LightReflection(const in vec4 position, const in vec3 normal) {
+    vec3 s = normalize(Light.Position - vec3(position));
+    vec3 r = reflect(-s, normal);
+
+    vec3 ambient = Light.La * Material.Ka;
+    vec3 diffuse = Light.Ld * Material.Kd *  max(dot(s, normal), 0);
+
+    return ambient + diffuse;
 }
 
 void main() {
-    vec4 position = ModelView * vec4(aPosition, 1.0);
+    vec4 position;
+    vec3 normal;
 
-    light_intensity = ambient_component() +
-                      diffuse_component(vec3(position));
+    SetViewSpace(position, normal);
 
+    color = LightReflection(position, normal);
     gl_Position = Projection * position;
 }

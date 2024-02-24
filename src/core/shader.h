@@ -30,6 +30,7 @@ public:
     auto SetInt(std::string_view uniform, int i) const -> void;
     auto SetFloat(std::string_view uniform, const float f) const -> void;
     auto SetVec3(std::string_view uniform, const glm::vec3& vec) const -> void;
+    auto SetMat3(std::string_view uniform, const glm::mat3& matrix) const -> void;
     auto SetMat4(std::string_view uniform, const glm::mat4& matrix) const -> void;
 
     ~Shader();

@@ -4,8 +4,8 @@
 
 layout (location = 0) out vec4 frag_color;
 
-in vec3 light_intensity;
+in vec3 color;
 
 void main() {
-    frag_color = vec4(light_intensity, 1.0);
+    frag_color = vec4(color, 1.0);
 }

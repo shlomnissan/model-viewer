@@ -97,6 +97,10 @@ auto Shader::SetVec3(std::string_view uniform, const glm::vec3& vec) const -> vo
     glUniform3fv(GetUniform(uniform), 1, &vec[0]);
 }
 
+auto Shader::SetMat3(std::string_view uniform, const glm::mat3& matrix) const -> void {
+    glUniformMatrix3fv(GetUniform(uniform), 1, GL_FALSE, &matrix[0][0]);
+}
+
 auto Shader::SetMat4(std::string_view uniform, const glm::mat4& matrix) const -> void {
     glUniformMatrix4fv(GetUniform(uniform), 1, GL_FALSE, &matrix[0][0]);
 }

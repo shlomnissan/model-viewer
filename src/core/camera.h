@@ -21,9 +21,9 @@ public:
 private:
     bool first_pos_ {true};
 
-    float distance_ = 4.0f;
-    float horizontal_angle_ = 0.8f;
-    float vertical_angle_ = 0.45f;
+    float distance_ = 6.0f;
+    float horizontal_angle_ = -0.4f;
+    float vertical_angle_ = 0.15f;
 
     glm::vec3 world_pos_ {0.0f};
     glm::vec3 position_ {4.5f, 2.0f, distance_};
