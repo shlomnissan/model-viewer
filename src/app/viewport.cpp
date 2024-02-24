@@ -13,7 +13,8 @@ auto Viewport::Draw() const -> void {
         ImGuiWindowFlags_NoTitleBar |
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoResize |
-        ImGuiWindowFlags_NoMove
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoBringToFrontOnFocus
     );
     ImGui::SetWindowPos({0, kTopOffset});
     ImGui::SetWindowSize({settings_.width, settings_.height});

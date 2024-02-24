@@ -37,10 +37,10 @@ auto main() -> int {
     glEnable(GL_DEPTH_TEST);
 
     auto framebuffer = Framebuffer {width, height};
-    auto menu = Menu {};
+    auto menu = Menu {width, height};
     auto viewport = Viewport {{
-        .width = static_cast<float>(width),
-        .height = static_cast<float>(height),
+        .width = width,
+        .height = height,
         .texture_id = framebuffer.texture_id()
     }};
 

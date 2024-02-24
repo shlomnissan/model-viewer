@@ -4,8 +4,9 @@
 #include "menu.h"
 
 #include <imgui.h>
-#include <fmt/format.h>
 
+Menu::Menu(const float window_width, const float window_height) :
+    window_width_(window_width), window_height_(window_height) {}
 
 auto Menu::Draw() -> void {
     if (ImGui::BeginMainMenuBar()) {
@@ -20,8 +21,35 @@ auto Menu::Draw() -> void {
     if (show_file_explorer_) ShowFileSelection();
 };
 
+auto Menu::CenteredText(std::string_view text) -> void {
+    auto offset = (ImGui::GetWindowWidth() - ImGui::CalcTextSize(text.data()).x) / 2;
+    ImGui::SetCursorPosX(offset);
+    ImGui::Text(text.data());
+}
+
 auto Menu::ShowAbout() -> void {
-    // TODO: #
+    const auto width = 300;
+    const auto height = 120;
+
+    ImGui::OpenPopup("About ");
+    ImGui::SetNextWindowSize({width, height});
+    ImGui::SetNextWindowPos({
+        (window_width_ - width) / 2,
+        (window_height_ - height) / 2
+    });
+
+    if (ImGui::BeginPopupModal(
+        "About ",
+        &show_about_,
+        ImGuiWindowFlags_NoResize
+    )) {
+        ImGui::SetCursorPosY(35);
+        CenteredText("3D Model Viewer");
+        CenteredText("Version 0.1");
+        CenteredText("Copyright Betamark 2014");
+        CenteredText("www.betamark.com");
+        ImGui::EndPopup();
+    }
 }
 
 auto Menu::ShowFileSelection() -> void {
