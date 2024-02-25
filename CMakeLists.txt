@@ -15,11 +15,12 @@ message(${CMAKE_SOURCE_DIR}/cmake)
 include(cmake/ShaderString.cmake)
 ShaderString()
 
-find_package(fmt REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(fmt REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
 find_package(imgui REQUIRED)
+find_package(portable-file-dialogs REQUIRED)
 
 set(CORE_SOURCES
     src/core/camera.cpp
@@ -61,9 +62,10 @@ target_include_directories(model-viewer PRIVATE
 
 target_link_libraries(
     model-viewer PRIVATE
+      OpenGL::GL
       fmt::fmt
       glfw
       glm::glm
-      OpenGL::GL
       imgui::imgui
+      portable-file-dialogs::portable-file-dialogs
 )

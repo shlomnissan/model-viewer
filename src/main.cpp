@@ -25,7 +25,7 @@ auto main() -> int {
     const auto width = 1024;
     const auto height = 768;
 
-    auto window = Window {width, height, "Model Viewer"};
+    auto window = Window {width, height, "3D Model Viewer"};
     auto camera = Camera{45.0f, width, height};
     auto grid = Grid{24};
 
@@ -43,6 +43,10 @@ auto main() -> int {
         .height = height,
         .texture_id = framebuffer.texture_id()
     }};
+
+    menu.OnLoad([](std::string_view file){
+        // TODO: load file
+    });
 
     auto monkey = Mesh {monkey_vertex_0, monkey_index_0};
     auto light_position = glm::vec3 {0.0f, 10.0f, 5.0f};

@@ -4,6 +4,7 @@
 #include "menu.h"
 
 #include <imgui.h>
+#include <portable-file-dialogs.h>
 
 Menu::Menu(const float window_width, const float window_height) :
     window_width_(window_width), window_height_(window_height) {}
@@ -53,5 +54,12 @@ auto Menu::ShowAbout() -> void {
 }
 
 auto Menu::ShowFileSelection() -> void {
-    // TODO: #
+    auto selection = pfd::open_file(
+        "Select a file", ".",
+        {"3D Object File (.obj .dae)", "*.obj", "*.dae"}
+    ).result();
+
+    if (!selection.empty()) on_load_(selection[0]);
+
+    show_file_explorer_ = false;
 }
