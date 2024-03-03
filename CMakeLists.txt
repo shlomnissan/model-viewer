@@ -16,6 +16,7 @@ include(cmake/ShaderString.cmake)
 ShaderString()
 
 find_package(OpenGL REQUIRED)
+find_package(assimp REQUIRED)
 find_package(fmt REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
@@ -29,6 +30,8 @@ set(CORE_SOURCES
     src/core/framebuffer.h
     src/core/mesh.cpp
     src/core/mesh.h
+    src/core/model.cpp
+    src/core/model.h
     src/core/shader.cpp
     src/core/shader.h
     src/core/window.cpp
@@ -63,6 +66,7 @@ target_include_directories(model-viewer PRIVATE
 target_link_libraries(
     model-viewer PRIVATE
       OpenGL::GL
+      assimp::assimp
       fmt::fmt
       glfw
       glm::glm

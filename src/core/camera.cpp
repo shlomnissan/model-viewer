@@ -9,10 +9,6 @@ Camera::Camera(float fov, float width, float height) {
     projection_ = glm::perspective(fov, width / height, 0.1f, 1000.0f);
 }
 
-auto Camera::Position() const -> glm::vec3 {
-    return world_pos_ * position_;
-}
-
 auto Camera::Projection() const -> glm::mat4 {
     return projection_;
 }

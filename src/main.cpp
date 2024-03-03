@@ -1,7 +1,7 @@
 // Copyright 2024 Betamark Pty Ltd. All rights reserved.
 // Author: Shlomi Nissan (shlomi@betamark.com)
 
-#include <vector>
+#include <deque>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -13,6 +13,7 @@
 #include "core/camera.h"
 #include "core/framebuffer.h"
 #include "core/mesh.h"
+#include "core/model.h"
 #include "core/shader.h"
 #include "core/window.h"
 
@@ -44,13 +45,14 @@ auto main() -> int {
         .texture_id = framebuffer.texture_id()
     }};
 
-    menu.OnLoad([](std::string_view file){
-        // TODO: load file
+    auto models = std::deque<Model> {};
+    menu.OnLoad([&models](std::string_view file) {
+        models.emplace_back(file);
+        if (models.size() > 1) models.pop_front();
     });
 
     auto monkey = Mesh {monkey_vertex_0, monkey_index_0};
-    auto light_position = glm::vec3 {0.0f, 10.0f, 5.0f};
-    auto material_color = glm::vec3 {1.0f, 0.5f, 0.31f};
+    auto material_color = glm::vec3 {0.6f, 0.6f, 0.6f};
 
     window.Start([&]([[maybe_unused]] const double delta){
         framebuffer.Bind();
@@ -61,18 +63,24 @@ auto main() -> int {
         grid.Draw(camera);
 
         auto model = glm::mat4{1.0f};
-        model = glm::translate(model, {0.0f, 0.5f, 0.0f});
+        if (models.empty()) {
+            model = glm::translate(model, {0.0f, 0.5f, 0.0f});
+        }
 
         shader.SetMat4("Projection", camera.Projection());
         shader.SetMat4("ModelView", camera.View() * model);
         shader.SetMat3("NormalMatrix", glm::mat3(glm::inverse(glm::transpose(camera.View() * model))));
-        shader.SetVec3("Light.Position", glm::vec3(camera.View() * glm::vec4(light_position, 1.0)));
-        shader.SetVec3("Light.La", glm::vec3{0.2f});
-        shader.SetVec3("Light.Ld", glm::vec3{1.0f});
+        shader.SetVec3("Light.Position", glm::vec3{0.0f});
+        shader.SetVec3("Light.La", glm::vec3{0.5f});
+        shader.SetVec3("Light.Ld", glm::vec3{0.8f});
         shader.SetVec3("Material.Ka", material_color);
         shader.SetVec3("Material.Kd", material_color);
 
-        monkey.Draw(shader);
+        if (models.empty()) monkey.Draw(shader);
+        for (const auto& model : models) {
+            model.Draw(shader);
+        }
+
         framebuffer.Unbind();
 
         menu.Draw();

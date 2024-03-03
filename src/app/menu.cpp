@@ -25,7 +25,7 @@ auto Menu::Draw() -> void {
 auto Menu::CenteredText(std::string_view text) -> void {
     auto offset = (ImGui::GetWindowWidth() - ImGui::CalcTextSize(text.data()).x) / 2;
     ImGui::SetCursorPosX(offset);
-    ImGui::Text(text.data());
+    ImGui::TextUnformatted(text.data());
 }
 
 auto Menu::ShowAbout() -> void {
@@ -47,7 +47,7 @@ auto Menu::ShowAbout() -> void {
         ImGui::SetCursorPosY(35);
         CenteredText("3D Model Viewer");
         CenteredText("Version 0.1");
-        CenteredText("Copyright Betamark 2014");
+        CenteredText("Copyright Betamark 2024");
         CenteredText("www.betamark.com");
         ImGui::EndPopup();
     }
