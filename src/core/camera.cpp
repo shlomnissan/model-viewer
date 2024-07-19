@@ -58,11 +58,14 @@ auto Camera::Zoom(const MousePosition& offset_pos) -> void {
 }
 
 auto Camera::Pan(const MousePosition& offset_pos) -> void {
-    world_pos_.x += offset_pos.first * 0.009f;
-    world_pos_.y += offset_pos.second * 0.009f;
+    world_pos_.x += offset_pos.first * SPEED;
+    world_pos_.y += offset_pos.second * SPEED;
 }
 
 auto Camera::Rotate(const MousePosition& offset_pos) -> void {
-    horizontal_angle_ += offset_pos.first * -0.009f;
-    vertical_angle_ += offset_pos.second * -0.009f;
+    horizontal_angle_ += offset_pos.first * -SPEED;
+    const auto next_v_angle = abs(vertical_angle_ + offset_pos.second * -SPEED);
+    if (next_v_angle < HALF_PI - EPSILON) {
+        vertical_angle_ += offset_pos.second * -SPEED;
+    }
 }

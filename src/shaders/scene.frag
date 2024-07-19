@@ -23,7 +23,6 @@ uniform MaterialInfo Material;
 
 vec3 LightReflection(const in vec4 position, const in vec3 normal) {
     vec3 s = normalize(Light.Position - vec3(position));
-    vec3 r = reflect(-s, normal);
 
     vec3 ambient = Light.La * Material.Ka;
     vec3 diffuse = Light.Ld * Material.Kd *  max(dot(s, normal), 0);

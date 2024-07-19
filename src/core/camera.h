@@ -18,6 +18,11 @@ public:
     auto View() const -> glm::mat4;
 
 private:
+    static constexpr float PI = 3.14159265358979323846;
+    static constexpr float HALF_PI = PI / 2;
+    static constexpr float EPSILON = 0.0000001;
+    static constexpr float SPEED = 0.009f;
+
     bool first_pos_ {true};
 
     float distance_ = 6.0f;
