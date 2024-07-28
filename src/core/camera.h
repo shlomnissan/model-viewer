@@ -28,7 +28,6 @@ private:
 
     glm::vec3 position_ {4.5f, 2.0f, distance_};
     glm::vec3 target_ {0.0f, 0.0f, 0.0f};
-    glm::vec3 up_ {0.0f, 1.0f, 0.0f};
     glm::mat4 projection_ {0.0f};
 
     MousePosition last_pos_ {0.0f, 0.0f};

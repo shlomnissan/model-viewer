@@ -17,7 +17,7 @@ auto Camera::Projection() const -> glm::mat4 {
 }
 
 auto Camera::View() const -> glm::mat4 {
-    return glm::lookAt(position_, target_, up_);
+    return glm::lookAt(position_, target_, {0.0, 1.0, 0.0});
 }
 
 auto Camera::Update(Window& window) -> void {
