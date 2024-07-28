@@ -12,7 +12,7 @@ Grid::Grid(unsigned int dimensions) : dimensions_(dimensions) {
     glGenVertexArrays(1, &vao_);
     glBindVertexArray(vao_);
 
-    ConfigureVertices();    
+    ConfigureVertices();
 
     // clean-up
     glBindVertexArray(0);

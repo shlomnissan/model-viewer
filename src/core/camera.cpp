@@ -3,7 +3,10 @@
 
 #include "camera.h"
 
+#include <algorithm>
+
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/constants.hpp>
 
 Camera::Camera(float fov, float width, float height) {
     projection_ = glm::perspective(fov, width / height, 0.1f, 1000.0f);
@@ -14,8 +17,7 @@ auto Camera::Projection() const -> glm::mat4 {
 }
 
 auto Camera::View() const -> glm::mat4 {
-    return  glm::translate(glm::mat4{1.0f}, world_pos_) *
-            glm::lookAt(position_, target_, up_);
+    return glm::lookAt(position_, target_, up_);
 }
 
 auto Camera::Update(Window& window) -> void {
@@ -46,10 +48,10 @@ auto Camera::Update(Window& window) -> void {
         last_pos_ = curr_pos;
     }
 
-    float pos_x = distance_ * sin(horizontal_angle_) * cos(vertical_angle_);
-    float pos_y = distance_ * sin(vertical_angle_);
-    float pos_z = distance_ * cos(horizontal_angle_) * cos(vertical_angle_);
-    position_ = glm::vec3(pos_x, pos_y, pos_z);
+    const auto pos_x = distance_ * sin(yaw_) * cos(pitch_);
+    const auto pos_y = distance_ * sin(pitch_);
+    const auto pos_z = distance_ * cos(yaw_) * cos(pitch_);
+    position_ = target_ + glm::vec3(pos_x, pos_y, pos_z);
 }
 
 auto Camera::Zoom(const MousePosition& offset_pos) -> void {
@@ -58,14 +60,19 @@ auto Camera::Zoom(const MousePosition& offset_pos) -> void {
 }
 
 auto Camera::Pan(const MousePosition& offset_pos) -> void {
-    world_pos_.x += offset_pos.first * SPEED;
-    world_pos_.y += offset_pos.second * SPEED;
+    const auto direction = glm::normalize(target_ - position_);
+    const auto right = glm::normalize(glm::cross(direction, {0.0f, 1.0f, 0.0f}));
+    const auto up = glm::cross(right, direction);
+
+    const auto pan_h = right * offset_pos.first * SPEED;
+    const auto pan_v = up * offset_pos.second * SPEED;
+    target_ -= pan_h + pan_v;
 }
 
 auto Camera::Rotate(const MousePosition& offset_pos) -> void {
-    horizontal_angle_ += offset_pos.first * -SPEED;
-    const auto next_v_angle = abs(vertical_angle_ + offset_pos.second * -SPEED);
-    if (next_v_angle < HALF_PI - EPSILON) {
-        vertical_angle_ += offset_pos.second * -SPEED;
-    }
+    yaw_ += offset_pos.first * -SPEED;
+    pitch_ += offset_pos.second * -SPEED;
+
+    const auto pitch_limit = glm::half_pi<float>() - glm::epsilon<float>();
+    pitch_ = std::clamp(pitch_, -pitch_limit, pitch_limit);
 }

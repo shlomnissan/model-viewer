@@ -18,18 +18,14 @@ public:
     auto View() const -> glm::mat4;
 
 private:
-    static constexpr float PI = 3.14159265358979323846;
-    static constexpr float HALF_PI = PI / 2;
-    static constexpr float EPSILON = 0.0000001;
     static constexpr float SPEED = 0.009f;
 
     bool first_pos_ {true};
 
     float distance_ = 6.0f;
-    float horizontal_angle_ = -0.4f;
-    float vertical_angle_ = 0.15f;
+    float yaw_ = -0.4f;
+    float pitch_ = 0.15f;
 
-    glm::vec3 world_pos_ {0.0f};
     glm::vec3 position_ {4.5f, 2.0f, distance_};
     glm::vec3 target_ {0.0f, 0.0f, 0.0f};
     glm::vec3 up_ {0.0f, 1.0f, 0.0f};
