@@ -3,6 +3,8 @@
 
 #include "camera.h"
 
+#include <algorithm>
+
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/constants.hpp>
 
@@ -71,5 +73,6 @@ auto Camera::Rotate(const MousePosition& offset_pos) -> void {
     yaw_ += offset_pos.first * -SPEED;
     pitch_ += offset_pos.second * -SPEED;
 
-    // TODO: lock pitch when it reaches 90 degrees
+    const auto pitch_limit = glm::half_pi<float>() - 0.01f;
+    pitch_ = std::clamp(pitch_, -pitch_limit, pitch_limit);
 }
