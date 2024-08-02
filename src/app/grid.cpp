@@ -74,8 +74,8 @@ auto Grid::AddPoint(
 
 auto Grid::Draw(const Camera& camera) const -> void {
     shader_.Use();
-    shader_.SetMat4("Projection", camera.Projection());
-    shader_.SetMat4("View", camera.View());
+    shader_.SetUniform("Projection", camera.Projection());
+    shader_.SetUniform("View", camera.View());
     glBindVertexArray(vao_);
     glDrawArrays(GL_LINES, 0, dimensions_ * 6);
 }

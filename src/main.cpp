@@ -67,14 +67,14 @@ auto main() -> int {
             model = glm::translate(model, {0.0f, 0.5f, 0.0f});
         }
 
-        shader.SetMat4("Projection", camera.Projection());
-        shader.SetMat4("ModelView", camera.View() * model);
-        shader.SetMat3("NormalMatrix", glm::mat3(glm::inverse(glm::transpose(camera.View() * model))));
-        shader.SetVec3("Light.Position", glm::vec3{0.0f});
-        shader.SetVec3("Light.La", glm::vec3{0.5f});
-        shader.SetVec3("Light.Ld", glm::vec3{0.8f});
-        shader.SetVec3("Material.Ka", material_color);
-        shader.SetVec3("Material.Kd", material_color);
+        shader.SetUniform("Projection", camera.Projection());
+        shader.SetUniform("ModelView", camera.View() * model);
+        shader.SetUniform("NormalMatrix", glm::mat3(glm::inverse(glm::transpose(camera.View() * model))));
+        shader.SetUniform("Light.Position", glm::vec3{0.0f});
+        shader.SetUniform("Light.La", glm::vec3{0.5f});
+        shader.SetUniform("Light.Ld", glm::vec3{0.8f});
+        shader.SetUniform("Material.Ka", material_color);
+        shader.SetUniform("Material.Kd", material_color);
 
         if (models.empty()) monkey.Draw(shader);
         for (const auto& model : models) {
