@@ -44,10 +44,6 @@ private:
 
     auto GetShaderType(ShaderType type) const -> GLuint;
     auto GetShaderTypeString(ShaderType type) const -> const char*;
-
-    auto ParseUniforms() -> void;
-
-
 };
 
 struct ShaderError : public std::runtime_error {

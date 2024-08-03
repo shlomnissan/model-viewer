@@ -26,7 +26,6 @@ Shader::Shader(const std::vector<ShaderInfo>& shaders) {
 
     glLinkProgram(program_);
     CheckProgramLinkStatus();
-    ParseUniforms();
 }
 
 auto Shader::Use() const -> void {
@@ -118,10 +117,6 @@ auto Shader::SetUniform(std::string_view uniform, const glm::mat3& matrix) const
 
 auto Shader::SetUniform(std::string_view uniform, const glm::mat4& matrix) const -> void {
     glUniformMatrix4fv(GetUniform(uniform), 1, GL_FALSE, &matrix[0][0]);
-}
-
-auto Shader::ParseUniforms() -> void {
-    // TODO: implement
 }
 
 Shader::~Shader() {
