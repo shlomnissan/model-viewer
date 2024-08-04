@@ -18,6 +18,7 @@ ShaderString()
 find_package(OpenGL REQUIRED)
 find_package(assimp REQUIRED)
 find_package(fmt REQUIRED)
+find_package(glad REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
 find_package(imgui REQUIRED)
@@ -39,7 +40,6 @@ set(CORE_SOURCES
 )
 
 set(LIBS_SOURCES
-    libs/glad/glad.c
     libs/imgui/imgui_impl_glfw.cpp
     libs/imgui/imgui_impl_glfw.h
     libs/imgui/imgui_impl_opengl3.cpp
@@ -68,6 +68,7 @@ target_link_libraries(
       OpenGL::GL
       assimp::assimp
       fmt::fmt
+      glad::glad
       glfw
       glm::glm
       imgui::imgui
